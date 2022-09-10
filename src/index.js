@@ -1,5 +1,6 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
+import Notiflix from 'notiflix';
 
 import { fetchCountries } from './js/fetchCountries';
 
@@ -14,14 +15,32 @@ const refs = {
 refs.inputEl.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
 function onInput(e) {
+  refs.countryListEl.innerHTML = '';
   const countryName = e.target.value.trim();
-  fetchCountries(countryName).then(data => {
-    console.log(data);
-    createCountresList(data);
-  });
+  if (countryName !== '') {
+    fetchCountries(countryName).then(data => {
+      if (data.length > 10) {
+        Notiflix.Notify.info(
+          'Too many matches found. Please enter a more specific name.'
+        );
+      }
+      if (data.length >= 2 && data.length <= 10) {
+        createCountresList(data);
+      }
+      if (data.length === 1) {
+        createCountresList(data);
+      }
+      if (data.length === 0) {
+        Notiflix.Notify.failure('Oops, there is no country with that name');
+      }
+      console.log(data);
+    });
+  }
 }
 
 function createCountresList(arr) {
+  refs.countryListEl.innerHTML = '';
+
   const markup = arr
     .map(country => {
       return `<li>
