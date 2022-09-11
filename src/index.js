@@ -24,9 +24,11 @@ function onInput(e) {
           'Too many matches found. Please enter a more specific name.'
         );
       } else if (data.length >= 2 && data.length <= 10) {
-        createCountresList(data);
+        const markup = createCountresList(data);
+        refs.countryListEl.innerHTML = markup;
       } else if (data.length === 1) {
-        createOneCountryInfo(data);
+        const markup = createOneCountryInfo(data);
+        refs.countryInfoEl.innerHTML = markup;
       } else if (data.length === 0) {
         Notiflix.Notify.failure('Oops, there is no country with that name');
       }
@@ -35,7 +37,7 @@ function onInput(e) {
 }
 
 function createCountresList(arr) {
-  const markup = arr
+  return arr
     .map(country => {
       return `<li>
       <img src="${country.flags.svg}" alt="Flag of ${country.name.official}" width="30" hight="20">
@@ -43,11 +45,10 @@ function createCountresList(arr) {
                 </li>`;
     })
     .join('');
-  return (refs.countryListEl.innerHTML = markup);
 }
 
 function createOneCountryInfo(arr) {
-  const markup = arr
+  return arr
     .map(country => {
       return `
      <div class="wrap"> <img src="${country.flags.svg}" alt="Flag of ${
@@ -59,8 +60,6 @@ function createOneCountryInfo(arr) {
 <p><b>languages:</b> ${Object.values(country.languages)} </p> `;
     })
     .join('');
-
-  return (refs.countryInfoEl.innerHTML = markup);
 }
 
 function cleanCountrestEl() {
