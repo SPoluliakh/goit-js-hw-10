@@ -14,9 +14,9 @@ const refs = {
 
 refs.inputEl.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
-function onInput(e) {
-  cleanCountrestEl();
-  const countryName = e.target.value.trim();
+function onInput(evt) {
+  cleanCountresEl();
+  const countryName = evt.target.value.trim();
   if (countryName !== '') {
     fetchCountries(countryName).then(data => {
       if (data.length > 10) {
@@ -38,10 +38,10 @@ function onInput(e) {
 
 function createCountresList(arr) {
   return arr
-    .map(country => {
+    .map(({ flags: { svg }, name: { official } }) => {
       return `<li>
-      <img src="${country.flags.svg}" alt="Flag of ${country.name.official}" width="30" hight="20">
-         <b>${country.name.official}</b>
+      <img src="${svg}" alt="Flag of ${official}" width="30" hight="20">
+         <b>${official}</b>
                 </li>`;
     })
     .join('');
@@ -49,20 +49,26 @@ function createCountresList(arr) {
 
 function createOneCountryInfo(arr) {
   return arr
-    .map(country => {
-      return `
-     <div class="wrap"> <img src="${country.flags.svg}" alt="Flag of ${
-        country.name.official
-      }" width="30" hight="20">
-         <h2 class="country-name">${country.name.official}</h2></div>
-<p><b>capital:</b> ${country.capital} </p>
-<p><b>population:</b> ${country.population} </p>
-<p><b>languages:</b> ${Object.values(country.languages)} </p> `;
-    })
+    .map(
+      ({
+        flags: { svg },
+        name: { official },
+        capital,
+        population,
+        languages,
+      }) => {
+        return `
+     <div class="wrap"> <img src="${svg}" alt="Flag of ${official}" width="30" hight="20">
+         <h2 class="country-name">${official}</h2></div>
+<p><b>capital:</b> ${capital} </p>
+<p><b>population:</b> ${population} </p>
+<p><b>languages:</b> ${Object.values(languages)} </p> `;
+      }
+    )
     .join('');
 }
 
-function cleanCountrestEl() {
+function cleanCountresEl() {
   refs.countryListEl.innerHTML = '';
   refs.countryInfoEl.innerHTML = '';
 }
