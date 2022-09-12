@@ -25,10 +25,10 @@ function onInput(evt) {
         );
       } else if (data.length >= 2 && data.length <= 10) {
         const markup = createCountresList(data);
-        refs.countryListEl.innerHTML = markup;
+        addMurkup(refs.countryListEl, markup);
       } else if (data.length === 1) {
         const markup = createOneCountryInfo(data);
-        refs.countryInfoEl.innerHTML = markup;
+        addMurkup(refs.countryInfoEl, markup);
       } else if (data.length === 0) {
         Notiflix.Notify.failure('Oops, there is no country with that name');
       }
@@ -66,6 +66,10 @@ function createOneCountryInfo(arr) {
       }
     )
     .join('');
+}
+
+function addMurkup(element, murkup) {
+  return (element.innerHTML = murkup);
 }
 
 function cleanCountresEl() {
