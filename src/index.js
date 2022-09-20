@@ -61,7 +61,9 @@ function createOneCountryInfo(arr) {
      <div class="wrap"> <img src="${svg}" alt="Flag of ${official}" width="30" hight="20">
          <h2 class="country-name">${official}</h2></div>
 <p><b>capital:</b> ${capital} </p>
-<p><b>population:</b> ${population} </p>
+<p><b>population:</b> ${population
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} </p>
 <p><b>languages:</b> ${Object.values(languages)} </p> `;
       }
     )
